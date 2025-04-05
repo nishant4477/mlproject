@@ -5,7 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>predicted</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #f8961e;
+            --danger: #f94144;
+            --grey-light: #e9ecef;
+            --grey: #adb5bd;
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -14,217 +29,650 @@
         }
         
         body {
-            background-color: #f5f7fa;
-            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--dark);
             line-height: 1.6;
+            min-height: 100vh;
+            padding: 2rem 0;
         }
         
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 1rem;
+            perspective: 1000px;
         }
         
         .login {
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-            margin-top: 2rem;
-            margin-bottom: 2rem;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transform-style: preserve-3d;
+            transition: all 0.5s ease;
         }
         
-        h1 {
-            color: #2c3e50;
-            text-align: center;
-            margin-bottom: 1rem;
-            font-size: 1.8rem;
+        .header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+            animation: shine 8s infinite linear;
+        }
+        
+        @keyframes shine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .header h1 {
+            color: white;
+            margin-bottom: 0.5rem;
+            font-size: 2.2rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .form-container {
+            padding: 2rem;
         }
         
         legend {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 600;
-            color: #3498db;
+            color: var(--secondary);
             margin-bottom: 1.5rem;
             text-align: center;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        legend::after {
+            content: '';
+            display: block;
+            width: 50%;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent), var(--primary));
+            margin: 8px auto 0;
+            border-radius: 2px;
         }
         
         .mb-3 {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.8rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .mb-3:hover {
+            transform: translateY(-3px);
         }
         
         .form-label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 500;
-            color: #2c3e50;
+            color: var(--dark);
+            transition: all 0.3s ease;
         }
         
         .form-control {
             width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #dce4ec;
-            border-radius: 6px;
+            padding: 1rem;
+            border: 2px solid var(--grey-light);
+            border-radius: 8px;
             font-size: 1rem;
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
+            background-color: var(--light);
         }
         
         .form-control:focus {
             outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.15);
+            background-color: white;
+        }
+        
+        .form-control:hover {
+            border-color: var(--grey);
+        }
+        
+        .input-icon {
+            position: absolute;
+            top: 40px;
+            right: 15px;
+            color: var(--grey);
+            transition: all 0.3s ease;
+        }
+        
+        .mb-3:hover .input-icon {
+            color: var(--primary);
+            transform: scale(1.2);
         }
         
         select.form-control option {
-            padding: 0.5rem;
+            padding: 10px;
         }
         
         .btn {
             display: block;
             width: 100%;
-            padding: 0.8rem;
+            padding: 1rem;
             border: none;
-            border-radius: 6px;
-            font-size: 1rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
         }
         
         .btn-primary {
-            background-color: #3498db;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.4);
         }
         
         .btn-primary:hover {
-            background-color: #2980b9;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.5);
         }
         
-        .prediction-result {
-            margin-bottom: 1.5rem;
+        .btn-primary::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.6s ease-out;
+            z-index: -1;
+        }
+        
+        .btn-primary:active::after {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0;
+        }
+        
+        .result-container {
+            margin-top: 2rem;
             text-align: center;
-            color: white;
-            background-color: #e74c3c;
-            padding: 1rem;
-            border-radius: 6px;
-            font-size: 1.3rem;
-            font-weight: 600;
-            animation: fadeIn 0.5s ease-in;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.8s forwards;
+            animation-delay: 0.2s;
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes fadeInUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
         
-        .header {
-            background-color: #3498db;
-            color: white;
+        .result-box {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 12px;
             padding: 1.5rem;
-            border-radius: 12px 12px 0 0;
-            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         
-        .header h1 {
-            color: white;
-            margin-bottom: 0;
+        .result-title {
+            font-size: 1.2rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
         }
         
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
+        .result-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 0%, var(--accent) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        
+        .score-circle::before {
+            content: "";
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: white;
+        }
+        
+        .score-value {
+            position: relative;
+            z-index: 2;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .result-message {
+            font-size: 1.1rem;
+            color: var(--dark);
+            margin-top: 0.5rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        
+        @media (min-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr 1fr;
             }
-            
-            .login {
-                padding: 1.5rem;
-            }
+        }
+        
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 8px solid white;
+            border-top: 8px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .form-floating {
+            position: relative;
+        }
+        
+        .floating-label {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            color: var(--grey);
+            pointer-events: none;
+            transition: all 0.25s ease;
+        }
+        
+        .form-floating input:focus ~ .floating-label,
+        .form-floating input:not(:placeholder-shown) ~ .floating-label {
+            top: -10px;
+            left: 10px;
+            font-size: 0.8rem;
+            color: var(--primary);
+            background-color: white;
+            padding: 0 5px;
+        }
+        
+        .card-3d-effect {
+            transition: transform 0.5s ease;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            width: 100%;
+            background-color: var(--grey-light);
+            border-radius: 4px;
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+        
+        .show-prediction {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+        
+        .show-prediction.active {
+            max-height: 500px;
+        }
+        
+        /* Confetti animation for successful prediction */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="login">
+        <div class="login card-3d-effect animate__animated animate__zoomIn">
             <div class="header">
-                <h1>Student Exam Performance Indicator</h1>
+                <h1 class="animate__animated animate__fadeInDown">Student Exam Performance Indicator</h1>
             </div>
             
-            {% if results %}
-            <div class="prediction-result">
-                THE prediction is {{results}}
+            <!-- Prediction Result (initially hidden) -->
+            <div id="predictionResult" class="show-prediction">
+                <div class="result-container">
+                    <div class="result-box">
+                        <div class="result-title">Your Predicted Math Score</div>
+                        <div class="score-circle">
+                            <span class="score-value" id="scoreValue">{{results}}</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="result-message" id="resultMessage">Great job! You're on track to succeed.</div>
+                    </div>
+                </div>
             </div>
-            {% endif %}
             
-            <form action="{{ url_for('predict_datapoint')}}" method="post">
-                <legend>Student Exam Performance Prediction</legend>
-                
-                <div class="mb-3">
-                    <label class="form-label">Gender</label>
-                    <select class="form-control" name="gender" required>
-                        <option class="placeholder" selected disabled value="">Select your Gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                    </select>
-                </div>
-                
-                <div class="mb-3">
-                    <label class="form-label">Race or Ethnicity</label>
-                    <select class="form-control" name="ethnicity" required>
-                        <option class="placeholder" selected disabled value="">Select Ethnicity</option>
-                        <option value="group A">Group A</option>
-                        <option value="group B">Group B</option>
-                        <option value="group C">Group C</option>
-                        <option value="group D">Group D</option>
-                        <option value="group E">Group E</option>
-                    </select>
-                </div>
-                
-                <div class="mb-3">
-                    <label class="form-label">Parental Level of Education</label>
-                    <select class="form-control" name="parental_level_of_education" required>
-                        <option class="placeholder" selected disabled value="">Select Parent Education</option>
-                        <option value="associate's degree">Associate's degree</option>
-                        <option value="bachelor's degree">Bachelor's degree</option>
-                        <option value="high school">High school</option>
-                        <option value="master's degree">Master's degree</option>
-                        <option value="some college">Some college</option>
-                        <option value="some high school">Some high school</option>
-                    </select>
-                </div>
-                
-                <div class="mb-3">
-                    <label class="form-label">Lunch Type</label>
-                    <select class="form-control" name="lunch" required>
-                        <option class="placeholder" selected disabled value="">Select Lunch Type</option>
-                        <option value="free/reduced">Free/Reduced</option>
-                        <option value="standard">Standard</option>
-                    </select>
-                </div>
-                
-                <div class="mb-3">
-                    <label class="form-label">Test Preparation Course</label>
-                    <select class="form-control" name="test_preparation_course" required>
-                        <option class="placeholder" selected disabled value="">Select Test Course</option>
-                        <option value="none">None</option>
-                        <option value="completed">Completed</option>
-                    </select>
-                </div>
-                
-                <div class="mb-3">
-                    <label class="form-label">Writing Score out of 100</label>
-                    <input class="form-control" type="number" name="reading_score" placeholder="Enter your Reading score" min='0' max='100' required />
-                </div>
-                
-                <div class="mb-3">
-                    <label class="form-label">Reading Score out of 100</label>
-                    <input class="form-control" type="number" name="writing_score" placeholder="Enter your Reading Score" min='0' max='100' required />
-                </div>
-                
-                <div class="mb-3">
-                    <input class="btn btn-primary" type="submit" value="Predict your Maths Score" />
-                </div>
-            </form>
+            <div class="form-container">
+                <form id="predictionForm" action="{{ url_for('predict_datapoint')}}" method="post">
+                    <legend class="animate__animated animate__fadeIn">Student Exam Performance Prediction</legend>
+                    
+                    <div class="form-row">
+                        <div class="mb-3 animate__animated animate__fadeInLeft" style="animation-delay: 0.1s">
+                            <label class="form-label">Gender</label>
+                            <select class="form-control" name="gender" required>
+                                <option class="placeholder" selected disabled value="">Select your Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                            <i class="fas fa-venus-mars input-icon"></i>
+                        </div>
+                        
+                        <div class="mb-3 animate__animated animate__fadeInRight" style="animation-delay: 0.2s">
+                            <label class="form-label">Race or Ethnicity</label>
+                            <select class="form-control" name="ethnicity" required>
+                                <option class="placeholder" selected disabled value="">Select Ethnicity</option>
+                                <option value="group A">Group A</option>
+                                <option value="group B">Group B</option>
+                                <option value="group C">Group C</option>
+                                <option value="group D">Group D</option>
+                                <option value="group E">Group E</option>
+                            </select>
+                            <i class="fas fa-users input-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="mb-3 animate__animated animate__fadeInLeft" style="animation-delay: 0.3s">
+                            <label class="form-label">Parental Level of Education</label>
+                            <select class="form-control" name="parental_level_of_education" required>
+                                <option class="placeholder" selected disabled value="">Select Parent Education</option>
+                                <option value="associate's degree">Associate's degree</option>
+                                <option value="bachelor's degree">Bachelor's degree</option>
+                                <option value="high school">High school</option>
+                                <option value="master's degree">Master's degree</option>
+                                <option value="some college">Some college</option>
+                                <option value="some high school">Some high school</option>
+                            </select>
+                            <i class="fas fa-graduation-cap input-icon"></i>
+                        </div>
+                        
+                        <div class="mb-3 animate__animated animate__fadeInRight" style="animation-delay: 0.4s">
+                            <label class="form-label">Lunch Type</label>
+                            <select class="form-control" name="lunch" required>
+                                <option class="placeholder" selected disabled value="">Select Lunch Type</option>
+                                <option value="free/reduced">Free/Reduced</option>
+                                <option value="standard">Standard</option>
+                            </select>
+                            <i class="fas fa-utensils input-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="mb-3 animate__animated animate__fadeInLeft" style="animation-delay: 0.5s">
+                            <label class="form-label">Test Preparation Course</label>
+                            <select class="form-control" name="test_preparation_course" required>
+                                <option class="placeholder" selected disabled value="">Select Test Course</option>
+                                <option value="none">None</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                            <i class="fas fa-book input-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="mb-3 form-floating animate__animated animate__fadeInLeft" style="animation-delay: 0.6s">
+                            <input class="form-control" type="number" name="reading_score" placeholder=" " min='0' max='100' required />
+                            <label class="floating-label">Reading Score out of 100</label>
+                            <i class="fas fa-book-reader input-icon"></i>
+                        </div>
+                        
+                        <div class="mb-3 form-floating animate__animated animate__fadeInRight" style="animation-delay: 0.7s">
+                            <input class="form-control" type="number" name="writing_score" placeholder=" " min='0' max='100' required />
+                            <label class="floating-label">Writing Score out of 100</label>
+                            <i class="fas fa-pen-fancy input-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3 animate__animated animate__fadeInUp" style="animation-delay: 0.8s">
+                        <button type="submit" id="predictBtn" class="btn btn-primary">
+                            <span>Predict your Maths Score</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
+    
+    <!-- Loading Spinner -->
+    <div class="loading" id="loadingSpinner">
+        <div class="loading-spinner"></div>
+    </div>
+    
+    <script>
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('predictionForm');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const loginCard = document.querySelector('.login');
+            const predictionResult = document.getElementById('predictionResult');
+            const progressFill = document.getElementById('progressFill');
+            const scoreValue = document.getElementById('scoreValue');
+            const resultMessage = document.getElementById('resultMessage');
+            
+            // Check if there's a result to show
+            const currentResult = '{{results}}';
+            if (currentResult && currentResult !== '{{results}}') {
+                showResult(currentResult);
+            }
+            
+            // 3D card effect on mouse move
+            document.addEventListener('mousemove', function(e) {
+                const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+                const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+                loginCard.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            });
+            
+            // Reset card position when mouse leaves
+            document.addEventListener('mouseleave', function() {
+                loginCard.style.transform = 'rotateY(0deg) rotateX(0deg)';
+            });
+            
+            // Form submission with animation
+            form.addEventListener('submit', function(e) {
+                // In a real application, this would be handled by the server
+                // For demo purposes, we'll prevent the actual form submission
+                // and show a fake prediction
+                e.preventDefault();
+                
+                // Show loading spinner
+                loadingSpinner.style.display = 'flex';
+                
+                // Get form values
+                const readingScore = parseFloat(form.querySelector('[name="reading_score"]').value) || 0;
+                const writingScore = parseFloat(form.querySelector('[name="writing_score"]').value) || 0;
+                
+                // Calculate a demo prediction (in a real app this would come from your model)
+                // This is just for demo purposes
+                const predictedScore = Math.round((readingScore + writingScore) / 2 + Math.random() * 10);
+                
+                // Simulate server processing
+                setTimeout(function() {
+                    // Hide loading spinner
+                    loadingSpinner.style.display = 'none';
+                    
+                    // Show result
+                    showResult(predictedScore);
+                    
+                    // Create confetti effect
+                    createConfetti();
+                }, 1500);
+            });
+            
+            function showResult(score) {
+                // Update score display
+                scoreValue.textContent = score;
+                
+                // Calculate percentage for progress bar (assuming max score is 100)
+                const percentage = Math.min(parseInt(score), 100);
+                
+                // Show prediction container
+                predictionResult.classList.add('active');
+                
+                // Scroll to top to show the result
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+                
+                // Animate progress bar
+                setTimeout(() => {
+                    progressFill.style.width = `${percentage}%`;
+                }, 300);
+                
+                // Set appropriate message based on score
+                if (score >= 80) {
+                    resultMessage.textContent = "Excellent! You're likely to perform very well!";
+                } else if (score >= 70) {
+                    resultMessage.textContent = "Great job! You're on track to succeed.";
+                } else if (score >= 60) {
+                    resultMessage.textContent = "Good work! With some focus, you can improve further.";
+                } else {
+                    resultMessage.textContent = "You may need additional preparation to improve your score.";
+                }
+            }
+            
+            // Create confetti animation
+            function createConfetti() {
+                const confettiCount = 100;
+                const colors = ['#f72585', '#4361ee', '#4cc9f0', '#f8961e', '#90be6d'];
+                
+                for (let i = 0; i < confettiCount; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    
+                    // Random position
+                    const startX = Math.random() * window.innerWidth;
+                    const startY = -20;
+                    
+                    // Random size
+                    const size = Math.random() * 10 + 5;
+                    
+                    // Random color
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    // Random rotation
+                    const rotation = Math.random() * 360;
+                    
+                    // Set properties
+                    confetti.style.width = `${size}px`;
+                    confetti.style.height = `${size}px`;
+                    confetti.style.backgroundColor = color;
+                    confetti.style.left = `${startX}px`;
+                    confetti.style.top = `${startY}px`;
+                    confetti.style.transform = `rotate(${rotation}deg)`;
+                    
+                    document.body.appendChild(confetti);
+                    
+                    // Animate
+                    const animationDuration = Math.random() * 3 + 2;
+                    const animationDelay = Math.random() * 2;
+                    
+                    confetti.animate([
+                        { transform: `translate(0, 0) rotate(${rotation}deg)`, opacity: 1 },
+                        { transform: `translate(${Math.random() * 200 - 100}px, ${window.innerHeight}px) rotate(${rotation + 360}deg)`, opacity: 0 }
+                    ], {
+                        duration: animationDuration * 1000,
+                        delay: animationDelay * 1000,
+                        easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
+                        fill: 'forwards'
+                    });
+                    
+                    // Remove confetti element after animation
+                    setTimeout(() => {
+                        document.body.removeChild(confetti);
+                    }, (animationDuration + animationDelay) * 1000 + 100);
+                }
+            }
+            
+            // Focus effect for form fields
+            const formControls = document.querySelectorAll('.form-control');
+            formControls.forEach(control => {
+                control.addEventListener('focus', function() {
+                    this.parentElement.style.transform = 'translateY(-5px)';
+                });
+                
+                control.addEventListener('blur', function() {
+                    this.parentElement.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
 </body>
 </html>
