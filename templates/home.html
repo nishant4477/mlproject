@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>predicted</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <style>
         :root {
             --primary: #4361ee;
@@ -40,7 +39,6 @@
             max-width: 900px;
             margin: 0 auto;
             padding: 1rem;
-            perspective: 1000px;
         }
         
         .login {
@@ -48,8 +46,11 @@
             border-radius: 16px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            transform-style: preserve-3d;
-            transition: all 0.5s ease;
+            transition: transform 0.3s ease;
+        }
+        
+        .login:hover {
+            transform: scale(1.02);
         }
         
         .header {
@@ -58,23 +59,6 @@
             padding: 2rem;
             position: relative;
             overflow: hidden;
-        }
-        
-        .header::before {
-            content: "";
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
-            transform: rotate(30deg);
-            animation: shine 8s infinite linear;
-        }
-        
-        @keyframes shine {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
         
         .header h1 {
@@ -116,11 +100,11 @@
         .mb-3 {
             margin-bottom: 1.8rem;
             position: relative;
-            transition: all 0.3s ease;
+            transition: transform 0.2s ease;
         }
         
         .mb-3:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
         }
         
         .form-label {
@@ -128,7 +112,6 @@
             margin-bottom: 0.5rem;
             font-weight: 500;
             color: var(--dark);
-            transition: all 0.3s ease;
         }
         
         .form-control {
@@ -148,21 +131,16 @@
             background-color: white;
         }
         
-        .form-control:hover {
-            border-color: var(--grey);
-        }
-        
         .input-icon {
             position: absolute;
             top: 40px;
             right: 15px;
             color: var(--grey);
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
         
         .mb-3:hover .input-icon {
             color: var(--primary);
-            transform: scale(1.2);
         }
         
         select.form-control option {
@@ -195,39 +173,10 @@
             box-shadow: 0 8px 25px rgba(67, 97, 238, 0.5);
         }
         
-        .btn-primary::after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 300px;
-            height: 300px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            transition: transform 0.6s ease-out;
-            z-index: -1;
-        }
-        
-        .btn-primary:active::after {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 0;
-        }
-        
         .result-container {
-            margin-top: 2rem;
+            margin: 1rem;
             text-align: center;
-            transform: translateY(20px);
-            opacity: 0;
-            animation: fadeInUp 0.8s forwards;
-            animation-delay: 0.2s;
-        }
-        
-        @keyframes fadeInUp {
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            transition: all 0.3s ease;
         }
         
         .result-box {
@@ -240,6 +189,11 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .result-box:hover {
+            transform: scale(1.03);
         }
         
         .result-title {
@@ -355,10 +309,6 @@
             padding: 0 5px;
         }
         
-        .card-3d-effect {
-            transition: transform 0.5s ease;
-        }
-        
         .progress-bar {
             height: 8px;
             width: 100%;
@@ -375,36 +325,13 @@
             border-radius: 4px;
             transition: width 1s ease;
         }
-        
-        .show-prediction {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease;
-        }
-        
-        .show-prediction.active {
-            max-height: 500px;
-        }
-        
-        /* Confetti animation for successful prediction */
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            background-color: #f00;
-            opacity: 0;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="login card-3d-effect animate__animated animate__zoomIn">
-            <div class="header">
-                <h1 class="animate__animated animate__fadeInDown">Student Exam Performance Indicator</h1>
-            </div>
-            
-            <!-- Prediction Result (initially hidden) -->
-            <div id="predictionResult" class="show-prediction">
+        <div class="login">
+            <!-- Prediction Result -->
+            <div id="predictionResult" style="display: none;">
                 <div class="result-container">
                     <div class="result-box">
                         <div class="result-title">Your Predicted Math Score</div>
@@ -419,12 +346,16 @@
                 </div>
             </div>
             
+            <div class="header">
+                <h1>Student Exam Performance Indicator</h1>
+            </div>
+            
             <div class="form-container">
                 <form id="predictionForm" action="{{ url_for('predict_datapoint')}}" method="post">
-                    <legend class="animate__animated animate__fadeIn">Student Exam Performance Prediction</legend>
+                    <legend>Student Exam Performance Prediction</legend>
                     
                     <div class="form-row">
-                        <div class="mb-3 animate__animated animate__fadeInLeft" style="animation-delay: 0.1s">
+                        <div class="mb-3">
                             <label class="form-label">Gender</label>
                             <select class="form-control" name="gender" required>
                                 <option class="placeholder" selected disabled value="">Select your Gender</option>
@@ -434,7 +365,7 @@
                             <i class="fas fa-venus-mars input-icon"></i>
                         </div>
                         
-                        <div class="mb-3 animate__animated animate__fadeInRight" style="animation-delay: 0.2s">
+                        <div class="mb-3">
                             <label class="form-label">Race or Ethnicity</label>
                             <select class="form-control" name="ethnicity" required>
                                 <option class="placeholder" selected disabled value="">Select Ethnicity</option>
@@ -449,7 +380,7 @@
                     </div>
                     
                     <div class="form-row">
-                        <div class="mb-3 animate__animated animate__fadeInLeft" style="animation-delay: 0.3s">
+                        <div class="mb-3">
                             <label class="form-label">Parental Level of Education</label>
                             <select class="form-control" name="parental_level_of_education" required>
                                 <option class="placeholder" selected disabled value="">Select Parent Education</option>
@@ -463,7 +394,7 @@
                             <i class="fas fa-graduation-cap input-icon"></i>
                         </div>
                         
-                        <div class="mb-3 animate__animated animate__fadeInRight" style="animation-delay: 0.4s">
+                        <div class="mb-3">
                             <label class="form-label">Lunch Type</label>
                             <select class="form-control" name="lunch" required>
                                 <option class="placeholder" selected disabled value="">Select Lunch Type</option>
@@ -475,7 +406,7 @@
                     </div>
                     
                     <div class="form-row">
-                        <div class="mb-3 animate__animated animate__fadeInLeft" style="animation-delay: 0.5s">
+                        <div class="mb-3">
                             <label class="form-label">Test Preparation Course</label>
                             <select class="form-control" name="test_preparation_course" required>
                                 <option class="placeholder" selected disabled value="">Select Test Course</option>
@@ -487,20 +418,20 @@
                     </div>
                     
                     <div class="form-row">
-                        <div class="mb-3 form-floating animate__animated animate__fadeInLeft" style="animation-delay: 0.6s">
+                        <div class="mb-3 form-floating">
                             <input class="form-control" type="number" name="reading_score" placeholder=" " min='0' max='100' required />
                             <label class="floating-label">Reading Score out of 100</label>
                             <i class="fas fa-book-reader input-icon"></i>
                         </div>
                         
-                        <div class="mb-3 form-floating animate__animated animate__fadeInRight" style="animation-delay: 0.7s">
+                        <div class="mb-3 form-floating">
                             <input class="form-control" type="number" name="writing_score" placeholder=" " min='0' max='100' required />
                             <label class="floating-label">Writing Score out of 100</label>
                             <i class="fas fa-pen-fancy input-icon"></i>
                         </div>
                     </div>
                     
-                    <div class="mb-3 animate__animated animate__fadeInUp" style="animation-delay: 0.8s">
+                    <div class="mb-3">
                         <button type="submit" id="predictBtn" class="btn btn-primary">
                             <span>Predict your Maths Score</span>
                         </button>
@@ -520,7 +451,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('predictionForm');
             const loadingSpinner = document.getElementById('loadingSpinner');
-            const loginCard = document.querySelector('.login');
             const predictionResult = document.getElementById('predictionResult');
             const progressFill = document.getElementById('progressFill');
             const scoreValue = document.getElementById('scoreValue');
@@ -531,18 +461,6 @@
             if (currentResult && currentResult !== '{{results}}') {
                 showResult(currentResult);
             }
-            
-            // 3D card effect on mouse move
-            document.addEventListener('mousemove', function(e) {
-                const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
-                const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
-                loginCard.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-            });
-            
-            // Reset card position when mouse leaves
-            document.addEventListener('mouseleave', function() {
-                loginCard.style.transform = 'rotateY(0deg) rotateX(0deg)';
-            });
             
             // Form submission with animation
             form.addEventListener('submit', function(e) {
@@ -569,10 +487,7 @@
                     
                     // Show result
                     showResult(predictedScore);
-                    
-                    // Create confetti effect
-                    createConfetti();
-                }, 1500);
+                }, 1000);
             });
             
             function showResult(score) {
@@ -583,7 +498,7 @@
                 const percentage = Math.min(parseInt(score), 100);
                 
                 // Show prediction container
-                predictionResult.classList.add('active');
+                predictionResult.style.display = 'block';
                 
                 // Scroll to top to show the result
                 window.scrollTo({
@@ -607,71 +522,6 @@
                     resultMessage.textContent = "You may need additional preparation to improve your score.";
                 }
             }
-            
-            // Create confetti animation
-            function createConfetti() {
-                const confettiCount = 100;
-                const colors = ['#f72585', '#4361ee', '#4cc9f0', '#f8961e', '#90be6d'];
-                
-                for (let i = 0; i < confettiCount; i++) {
-                    const confetti = document.createElement('div');
-                    confetti.className = 'confetti';
-                    
-                    // Random position
-                    const startX = Math.random() * window.innerWidth;
-                    const startY = -20;
-                    
-                    // Random size
-                    const size = Math.random() * 10 + 5;
-                    
-                    // Random color
-                    const color = colors[Math.floor(Math.random() * colors.length)];
-                    
-                    // Random rotation
-                    const rotation = Math.random() * 360;
-                    
-                    // Set properties
-                    confetti.style.width = `${size}px`;
-                    confetti.style.height = `${size}px`;
-                    confetti.style.backgroundColor = color;
-                    confetti.style.left = `${startX}px`;
-                    confetti.style.top = `${startY}px`;
-                    confetti.style.transform = `rotate(${rotation}deg)`;
-                    
-                    document.body.appendChild(confetti);
-                    
-                    // Animate
-                    const animationDuration = Math.random() * 3 + 2;
-                    const animationDelay = Math.random() * 2;
-                    
-                    confetti.animate([
-                        { transform: `translate(0, 0) rotate(${rotation}deg)`, opacity: 1 },
-                        { transform: `translate(${Math.random() * 200 - 100}px, ${window.innerHeight}px) rotate(${rotation + 360}deg)`, opacity: 0 }
-                    ], {
-                        duration: animationDuration * 1000,
-                        delay: animationDelay * 1000,
-                        easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
-                        fill: 'forwards'
-                    });
-                    
-                    // Remove confetti element after animation
-                    setTimeout(() => {
-                        document.body.removeChild(confetti);
-                    }, (animationDuration + animationDelay) * 1000 + 100);
-                }
-            }
-            
-            // Focus effect for form fields
-            const formControls = document.querySelectorAll('.form-control');
-            formControls.forEach(control => {
-                control.addEventListener('focus', function() {
-                    this.parentElement.style.transform = 'translateY(-5px)';
-                });
-                
-                control.addEventListener('blur', function() {
-                    this.parentElement.style.transform = 'translateY(0)';
-                });
-            });
         });
     </script>
 </body>
